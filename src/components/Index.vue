@@ -59,6 +59,14 @@
     margin-top            : 60px
   }
 
+  @media all  and (max-width: 760px){
+    .index {
+      grid-template-columns : 1fr;
+      grid-gap              : 30px;
+      margin-top            : 30px
+    }
+  }
+
   .index .ingredients {
     margin-top    : 30px;
     margin-bottom : 0;

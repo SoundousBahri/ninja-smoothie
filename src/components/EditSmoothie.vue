@@ -68,7 +68,7 @@
             })
 
         },
-        methods:{
+        methods: {
             editSmoothie() {
 
                 this.addIngredient();
@@ -125,7 +125,7 @@
   }
 
   .edit-smoothie .field {
-    margin   : 0px auto;
+    margin   : 0 auto;
     position : relative;
   }
 

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/components/Index'
+import About from '@/components/About'
 import AddSmoothie from '@/components/AddSmoothie'
 import EditSmoothie from '@/components/EditSmoothie'
 
@@ -13,6 +14,10 @@ export default new Router({
       path: '/',
       name: 'Index',
       component: Index
+    }, {
+      path: '/about',
+      name: 'About',
+      component: About
     },
     {
       path: '/add-smoothie',
