@@ -15,6 +15,7 @@
         <a href="#" class="pink-text" @click="deleteSmoothie(smoothie.id, idx)"><i class="material-icons">delete</i>Delete</a>
       </div>
     </div>
+    <!--todo add simple authentication to prevent one user from deleting all entries-->
   </div>
 </template>
 

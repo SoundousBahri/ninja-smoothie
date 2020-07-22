@@ -8,21 +8,28 @@
           <router-link :to="{name:'Index'}">Home</router-link>
         </li>
         <li>
+          <router-link :to="{name:'Chat'}">Chat</router-link>
+        </li>
+        <li>
           <router-link :to="{name:'About'}">About</router-link>
         </li>
         <li><a href="https://github.com/SoundousBahri/ninja-smoothie" target="_blank">Github</a></li>
       </ul>
 
-      <ul id="nav-mobile" class="sidenav" >
+      <ul id="nav-mobile" class="sidenav">
         <li @click="closeNav">
           <router-link :to="{name:'Index'}">Home</router-link>
+        </li>
+        <li @click="closeNav">
+          <router-link :to="{name:'Chat'}">Chat</router-link>
         </li>
         <li @click="closeNav">
           <router-link :to="{name:'About'}">About</router-link>
         </li>
         <li @click="closeNav"><a href="https://github.com/SoundousBahri/ninja-smoothie" target="_blank">Github</a></li>
       </ul>
-      <router-link v-if="this.$route.name==='Index'" :to="{name:'AddSmoothie'}" class="btn-floating btn-large halfway-fab waves-effect waves-light pink">
+      <router-link v-if="this.$route.name==='Index'" :to="{name:'AddSmoothie'}"
+                   class="btn-floating btn-large halfway-fab waves-effect waves-light pink">
         <i class="material-icons">add</i>
       </router-link>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -73,7 +80,7 @@
         name: 'Navbar',
         data() {
             return {
-                instance:null
+                instance: null
             }
         },
         mounted() {
@@ -82,8 +89,8 @@
             console.log(M.Sidenav.init(elems, {}));
             this.instance = M.Sidenav.init(elems, {})[0];
         },
-        methods:{
-            closeNav(){
+        methods: {
+            closeNav() {
                 this.instance.close();
             }
         }
