@@ -1,6 +1,6 @@
 # ninja-smoothie
 
-> A Vue.js project
+> A sample crud application with vuejs and firebese
 
 ## Build Setup
 
