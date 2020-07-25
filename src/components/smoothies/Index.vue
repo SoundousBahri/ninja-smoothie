@@ -30,6 +30,7 @@
 
 <script>
     import db from '../../firebase/database'
+    import firebase from 'firebase'
 
     export default {
         name: 'Index',
@@ -49,7 +50,7 @@
         },
         created() {
             this.loading = true;
-            db.collection('smoothies').get()
+            db.collection('smoothies').where('user_id', '==', firebase.auth().currentUser.uid).get()
                 .then(snapshot => {
                     this.loading = false;
                     snapshot.forEach(doc => {

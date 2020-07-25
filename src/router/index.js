@@ -18,11 +18,11 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
       component: Login
     }, {
-      path: '/',
+      path: '/sign-up',
       name: 'SignUp',
       component: SignUp
     }, {
