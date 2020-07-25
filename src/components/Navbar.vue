@@ -4,95 +4,121 @@
     <div class="nav-wrapper container">
       <router-link :to="{name:'Index'}" id="logo-container" class="brand-logo">Ninja Smoothies</router-link>
       <ul class="right hide-on-med-and-down">
-        <li>
-          <router-link :to="{name:'Index'}">Home</router-link>
+        <li v-for="(link, index) in links" :key="index"
+            v-if="(link.requiresAuth && user) || (link.requiresAuth===false && !user) || link.requiresAuth===null">
+          <router-link v-if="!link.external" :to="{name:link.name}">{{link.text}}</router-link>
+          <a v-else :href="link.external" target="_blank">{{link.text}}</a>
         </li>
-        <li>
-          <router-link :to="{name:'Chat'}">Chat</router-link>
+        <li v-if="user">
+          <a @click="logout">Logout</a>
         </li>
-        <li>
-          <router-link :to="{name:'About'}">About</router-link>
-        </li>
-        <li><a href="https://github.com/SoundousBahri/ninja-smoothie" target="_blank">Github</a></li>
       </ul>
-
       <ul id="nav-mobile" class="sidenav">
-        <li @click="closeNav">
-          <router-link :to="{name:'Index'}">Home</router-link>
+        <li>
+          <div class="user-view">
+            <div class="background">
+              <img src="../assets/office.jpg" alt="background">
+            </div>
+            <a href="#" v-if="user"><i class="material-icons circle blue center-align">person</i></a>
+            <a href="#" v-if="user"><span class="white-text name">{{user.username}}</span></a>
+            <a href="#" v-if="user"><span class="white-text email">{{user.email}}</span></a>
+          </div>
         </li>
-        <li @click="closeNav">
-          <router-link :to="{name:'Chat'}">Chat</router-link>
+        <li @click="closeNav" v-for="(link, index) in links" :key="index"
+            v-if="(link.requiresAuth && user) || (link.requiresAuth===false && !user) || link.requiresAuth===null">
+          <router-link v-if="!link.external" class="waves-effect" :to="{name:link.name}">
+            <i class="material-icons">{{link.icon}}</i>
+            {{link.text}}
+          </router-link>
+          <a v-else :href="link.external" target="_blank">
+            <i class="material-icons">{{link.icon}}</i>
+            {{link.text}}
+          </a>
         </li>
-        <li @click="closeNav">
-          <router-link :to="{name:'About'}">About</router-link>
+        <li @click="closeNav" v-if="user">
+          <a @click="logout"> <i class="material-icons">exit_to_app</i> Logout</a>
         </li>
-        <li @click="closeNav"><a href="https://github.com/SoundousBahri/ninja-smoothie" target="_blank">Github</a></li>
       </ul>
       <router-link v-if="this.$route.name==='Index'" :to="{name:'AddSmoothie'}"
                    class="btn-floating btn-large halfway-fab waves-effect waves-light pink">
         <i class="material-icons">add</i>
       </router-link>
+      <!--Show links depending on whether the user is logged in-->
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
   </nav>
-
-  <!--
-  <nav>
-    <div class="nav-wrapper indigo">
-      <router-link :to="{name:'Index'}" class="brand-logo">Ninja Smoothies</router-link>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><router-link :to="{name:'Index'}">Home</router-link></li>
-        <li><router-link :to="{name:'About'}">About</router-link></li>
-        <li><a href="#" target="_blank">Github</a></li>
-      </ul>
-      <router-link :to="{name:'AddSmoothie'}" class="btn-floating btn-large halfway-fab waves-effect waves-light pink">
-        <i class="material-icons">add</i>
-      </router-link>
-    </div>
-  </nav>
-    <ul id="slide-out" class="sidenav">
-      <li>
-        <div class="user-view">
-          <div class="background">
-            <img src="images/office.jpg">
-          </div>
-          <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-          <a href="#name"><span class="white-text name">John Doe</span></a>
-          <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
-        </div>
-      </li>
-      <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-      <li><a href="#!">Second Link</a></li>
-      <li>
-        <div class="divider"></div>
-      </li>
-      <li><a class="subheader">Subheader</a></li>
-      <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
--->
-
 </template>
 
 <script>
+
+    import firebase from 'firebase'
 
     export default {
         name: 'Navbar',
         data() {
             return {
-                instance: null
+                user: null,
+                instance: null,
+                links: [
+                    {
+                        name: 'Index',
+                        text: 'Home',
+                        icon: 'home',
+                        requiresAuth: true
+                    }, {
+                        name: 'Chat',
+                        text: 'Chat',
+                        icon: 'chat',
+                        requiresAuth: true
+                    }, {
+                        name: 'Map',
+                        text: 'Map',
+                        icon: 'map',
+                        requiresAuth: true
+                    }, {
+                        name: 'Login',
+                        text: 'Login',
+                        icon: 'person',
+                        requiresAuth: false
+                    }, {
+                        name: 'SignUp',
+                        text: 'Sign up',
+                        icon: 'person_add',
+                        requiresAuth: false
+                    }, {
+                        name: 'About',
+                        text: 'About',
+                        icon: 'info',
+                        requiresAuth: null,
+                    }, {
+                        name: null,
+                        text: 'Github',
+                        icon: 'code',
+                        requiresAuth: null,
+                        external: 'https://github.com/SoundousBahri/ninja-smoothie'
+                    },
+                ]
             }
         },
         mounted() {
 
-            let elems = document.querySelectorAll('.sidenav');
-            console.log(M.Sidenav.init(elems, {}));
-            this.instance = M.Sidenav.init(elems, {})[0];
+            let elms = document.querySelectorAll('.sidenav');
+            this.instance = M.Sidenav.init(elms, {})[0];
         },
         methods: {
             closeNav() {
                 this.instance.close();
+            },
+            logout() {
+                firebase.auth().signOut().then(() => {
+                    this.$router.push({name: 'Login'})
+                });
             }
+        },
+        created() {
+            firebase.auth().onAuthStateChanged((user) => {
+                this.user = user
+            })
         }
     }
 </script>
@@ -101,6 +127,9 @@
     nav .btn-floating.btn-large.halfway-fab {
       right : -50px;
     }
+  }
+  .user-view{
+    height: 163px;
   }
 
 </style>

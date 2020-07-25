@@ -1,25 +1,37 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Welcome from '@/components/Welcome'
-import Index from '@/components/Index'
-import About from '@/components/About'
-import Chat from '@/components/Chat'
-import AddSmoothie from '@/components/AddSmoothie'
-import EditSmoothie from '@/components/EditSmoothie'
+import Login from '../components/auth/Login'
+import SignUp from '../components/auth/SignUp'
+import Index from '../components/smoothies/Index'
+import About from '../components/About'
+import Chat from '../components/chat/Chat'
+import Map from '../components/sharing/Map'
+import AddSmoothie from '../components/smoothies/AddSmoothie'
+import EditSmoothie from '../components/smoothies/EditSmoothie'
+import Profile from "../components/sharing/Profile";
+
+import firebase from "firebase";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'Welcome',
-      component: Welcome
+      name: 'Login',
+      component: Login
     }, {
-      path: '/smoothies',
+      path: '/',
+      name: 'SignUp',
+      component: SignUp
+    }, {
+      path: '/',
       name: 'Index',
       component: Index,
+      meta: {
+        requiresAuth: true
+      }
 
     }, {
       path: '/about',
@@ -29,25 +41,59 @@ export default new Router({
       path: '/chat',
       name: 'Chat',
       component: Chat,
-      props: true,
-      beforeEnter: (to, from, next) => {
-        if (to.params.name) {
-          next()
-        } else {
-          next({name: 'Welcome'})
-        }
+      meta: {
+        requiresAuth: true
+      },
+    }, {
+      path: '/map',
+      name: 'Map',
+      component: Map,
+      meta: {
+        requiresAuth: true
       }
     },
     {
       path: '/add-smoothie',
       name: 'AddSmoothie',
       component: AddSmoothie,
+      meta: {
+        requiresAuth: true
+      }
 
     },
     {
       path: '/edit-smoothie/:smoothie_slug',
       name: 'EditSmoothie',
       component: EditSmoothie,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/profile/:user_id',
+      name: 'Profile',
+      component: Profile,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
-})
+});
+
+
+router.beforeEach((to, from, next) => {
+
+  if (to.matched.some(() => to.meta.requiresAuth)) {
+    let user = firebase.auth().currentUser;
+    if (user) {
+      next()
+    } else {
+      next({name: 'Login'})
+    }
+  } else {
+    next()
+  }
+});
+
+
+export default router

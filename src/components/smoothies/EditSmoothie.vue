@@ -10,9 +10,9 @@
       </div>
       <div class="row" v-for="(ingredient, index)  in smoothie.ingredients" :key="index">
         <div class="input-field field col s12">
-          <input :id="'ingredient-'+index" type="text" class="validate active" v-model="smoothie.ingredients[index]">
+          <input :id="'ingredient-'+index" type="text" class="validate" v-model="smoothie.ingredients[index]">
           <i class="material-icons delete-icon" @click="deleteIngredient(index)">delete</i>
-          <label :for="'ingredient-'+index"></label>
+          <label :for="'ingredient-'+index" class="active"></label>
         </div>
 
       </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import db from '../firebase/database'
+    import db from '../../firebase/database'
     import slugify from 'slugify'
 
     export default {
@@ -98,7 +98,6 @@
             },
             addIngredient() {
                 this.$refs['add-ingredient-input'].focus();
-                console.log("addIngredient");
                 if (this.typedIngredient) {
                     this.smoothie.ingredients.push(this.typedIngredient);
                     this.feedback = null;

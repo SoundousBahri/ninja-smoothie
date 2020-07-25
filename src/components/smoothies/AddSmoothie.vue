@@ -45,8 +45,10 @@
 </template>
 
 <script>
-    import db from '../firebase/database'
+    import db from '../../firebase/database'
     import slugify from 'slugify'
+    import firebase from 'firebase'
+
 
     export default {
         name: 'AddSmoothie',
@@ -78,7 +80,8 @@
                     db.collection('smoothies').add({
                         title: this.title,
                         ingredients: this.ingredients,
-                        slug: slug
+                        slug: slug,
+                        user_id: firebase.auth().currentUser.uid
                     }).then(() => {
                         this.$router.push({name: 'Index'})
                     })
@@ -89,7 +92,6 @@
             },
             addIngredient() {
                 this.$refs['add-ingredient-input'].focus();
-                console.log("addIngredient");
                 if (this.typedIngredient) {
                     this.ingredients.push(this.typedIngredient);
                     this.feedback = null;
@@ -116,7 +118,7 @@
   }
 
   .add-smoothie .field {
-    margin   : 0px auto;
+    margin   : 0 auto;
     position : relative;
   }
 
